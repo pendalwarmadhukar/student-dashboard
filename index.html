@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Login Screen -->
+        <div id="loginScreen" class="screen active">
+            <div class="login-container">
+                <h1><i class="fas fa-graduation-cap"></i> Student Dashboard</h1>
+                <p class="subtitle">Login to access your student portal</p>
+                
+                <div class="login-form">
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" placeholder="student@test.com" value="student@test.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" value="password123">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="role">Login as:</label>
+                        <select id="role">
+                            <option value="student">Student</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    
+                    <button id="loginBtn" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    
+                    <div class="demo-info">
+                        <h3><i class="fas fa-info-circle"></i> Demo Credentials</h3>
+                        <p><strong>Student:</strong> student@test.com / password123</p>
+                        <p><strong>Admin:</strong> admin@test.com / password123</p>
+                        <p><i class="fas fa-server"></i> Backend: http://localhost:5000</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Screen -->
+        <div id="dashboardScreen" class="screen">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1><i class="fas fa-graduation-cap"></i> Student Portal</h1>
+                    <p id="currentTime"></p>
+                </div>
+                
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-details">
+                        <h3 id="userName">John Student</h3>
+                        <p id="userRole" class="role-badge">Student</p>
+                    </div>
+                    <button id="logoutBtn" class="btn btn-logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </header>
+
+            <!-- Navigation -->
+            <nav class="dashboard-nav">
+                <button class="nav-btn active" data-view="overview">
+                    <i class="fas fa-home"></i> Overview
+                </button>
+                <button class="nav-btn" data-view="courses">
+                    <i class="fas fa-book"></i> Courses
+                </button>
+                <button class="nav-btn" data-view="profile">
+                    <i class="fas fa-user"></i> Profile
+                </button>
+                <button class="nav-btn admin-only" data-view="admin">
+                    <i class="fas fa-cog"></i> Admin Panel
+                </button>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="dashboard-content">
+                <!-- Overview View -->
+                <div id="overviewView" class="view active">
+                    <h2><i class="fas fa-chart-line"></i> Dashboard Overview</h2>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Enrolled Courses</h3>
+                                <p id="statCourses" class="stat-number">0</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Upcoming Classes</h3>
+                                <p id="statClasses" class="stat-number">0</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Pending Assignments</h3>
+                                <p id="statAssignments" class="stat-number">0</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Average Grade</h3>
+                                <p id="statGrade" class="stat-number">-</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-grid">
+                        <div class="card">
+                            <h3><i class="fas fa-book"></i> Recent Courses</h3>
+                            <div id="recentCourses" class="courses-list">
+                                <p class="loading">Loading courses...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <h3><i class="fas fa-clock"></i> Upcoming Deadlines</h3>
+                            <div id="upcomingDeadlines" class="deadlines-list">
+                                <p class="loading">Loading deadlines...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Courses View -->
+                <div id="coursesView" class="view">
+                    <h2><i class="fas fa-book"></i> My Courses</h2>
+                    
+                    <div class="courses-header">
+                        <input type="text" id="courseSearch" placeholder="Search courses..." class="search-input">
+                        <button id="refreshCourses" class="btn btn-secondary">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                    
+                    <div id="coursesList" class="courses-container">
+                        <p class="loading">Loading courses...</p>
+                    </div>
+                </div>
+
+                <!-- Profile View -->
+                <div id="profileView" class="view">
+                    <h2><i class="fas fa-user"></i> My Profile</h2>
+                    
+                    <div class="profile-container">
+                        <div class="profile-card">
+                            <div class="profile-header">
+                                <div class="profile-avatar">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <h3 id="profileName">John Student</h3>
+                                <p id="profileEmail">student@test.com</p>
+                            </div>
+                            
+                            <div class="profile-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">Student ID:</span>
+                                    <span id="profileStudentId" class="detail-value">S123456</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Department:</span>
+                                    <span id="profileDepartment" class="detail-value">Computer Science</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Semester:</span>
+                                    <span id="profileSemester" class="detail-value">2</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Role:</span>
+                                    <span id="profileRole" class="detail-value">Student</span>
+                                </div>
+                            </div>
+                            
+                            <div class="profile-actions">
+                                <button id="editProfileBtn" class="btn btn-primary">
+                                    <i class="fas fa-edit"></i> Edit Profile
+                                </button>
+                                <button id="changePasswordBtn" class="btn btn-secondary">
+                                    <i class="fas fa-key"></i> Change Password
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin View -->
+                <div id="adminView" class="view">
+                    <h2><i class="fas fa-cog"></i> Admin Panel</h2>
+                    
+                    <div class="admin-grid">
+                        <div class="admin-card">
+                            <div class="admin-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3>Manage Users</h3>
+                            <p>View and manage all system users</p>
+                            <button id="manageUsersBtn" class="btn btn-admin">
+                                <i class="fas fa-arrow-right"></i> Access
+                            </button>
+                        </div>
+                        
+                        <div class="admin-card">
+                            <div class="admin-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <h3>Manage Courses</h3>
+                            <p>Add, edit, or remove courses</p>
+                            <button id="manageCoursesBtn" class="btn btn-admin">
+                                <i class="fas fa-arrow-right"></i> Access
+                            </button>
+                        </div>
+                        
+                        <div class="admin-card">
+                            <div class="admin-icon">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <h3>Statistics</h3>
+                            <p>View system statistics and reports</p>
+                            <button id="viewStatsBtn" class="btn btn-admin">
+                                <i class="fas fa-arrow-right"></i> Access
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Footer -->
+            <footer class="dashboard-footer">
+                <p>© 2025 Student Dashboard System | Backend: http://localhost:5000</p>
+                <p id="apiStatus" class="status-success">
+                    <i class="fas fa-check-circle"></i> API Connected
+                </p>
+            </footer>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
